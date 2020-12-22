@@ -13,6 +13,7 @@ import com.lexor.model.Product;
 import com.lexor.model.PurchaseOrderDto;
 import com.lexor.service.IQBOService;
 import com.lexor.service.SecurityService;
+import com.lexor.service.estimate.EstimateServiceQBOImp;
 import com.lexor.service.item.ItemQBOService;
 
 import com.lexor.service.purchaseorder.PurchaseOrderQBOServiceImp;
@@ -29,7 +30,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.*;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
@@ -113,29 +113,17 @@ public class QuickBookController {
     @Path("order-sales")
     @POST
     @PermitAll
-    public Response sendOrderToQuickBook(@FormParam("order")String order) throws FMSException, ParseException {
+    public Response sendOrderToQuickBook(@FormParam("order")String order) throws ExecutionException, InterruptedException {
 
         OrderQuickBook orderQuickBook = (OrderQuickBook) convertData(order, new ProxyOrder());
-        System.out.println(order);
-        // create Data Service QBO
 
-//        IEstimateServiceQBO estimateServiceQBO = new EstimateServiceQBOImp();
-//        Estimate estimate = estimateServiceQBO.createEstimate(orderQuickBook,dataService);
-//        if(estimate != null)
-//            return Response.status(Response.Status.CREATED).entity(SUCCESS).build();
-
-//        IQBOService invoiceQBOService = new InvoiceQBOServiceImp();
-//        Invoice invoice = (Invoice) invoiceQBOService.createEntityQBO(orderQuickBook,dataService);
-//        if(invoice != null)
-//            return Response.status(Response.Status.CREATED).entity(SUCCESS).build();
-//        IPaymentQBOService paymentQBOService = new PaymentQBOServiceImp();
-//        Double amount = 1000.d;
-//            Payment payment = paymentQBOService.createPaymentQBO("53",amount,dataService);
+        IQBOService estimateServiceQBO = new EstimateServiceQBOImp();
+        boolean estimate = estimateServiceQBO.sendAsynQBO(orderQuickBook);
+        if(estimate)
+            return Response.status(Response.Status.CREATED).entity(SUCCESS).build();
 
         return null;
-//        return  invoice != null ?
-//                Response.status(Response.Status.CREATED).entity(SUCCESS).build():
-//                Response.status(Response.Status.FORBIDDEN).entity(ERROR).build();
+
     }
 
 

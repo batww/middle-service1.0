@@ -50,10 +50,6 @@ public class PaymentQBOServiceImp implements IPaymentQBOService, IQBOService {
         linkedTxnList.add(linkedTxn);
 
         payment.setLinkedTxn(linkedTxnList);
-        CustomField customField = new CustomField();
-        customField.setDefinitionId("1");
-        customField.setStringValue(invoice.getDocNumber());
-        payment.setCustomField(Arrays.asList(customField));
 
         Line line1 = new Line();
         line1.setAmount(new BigDecimal("11.00"));
@@ -81,19 +77,22 @@ public class PaymentQBOServiceImp implements IPaymentQBOService, IQBOService {
 
         CreditChargeInfo creditChargeInfo=new CreditChargeInfo();
         creditChargeInfo.setNameOnAcct("osssiuyyee");
-        creditChargeInfo.setNumber("5101 1800 0000 0007");
+        creditChargeInfo.setNumber("5111005111051128");
         creditChargeInfo.setType("Commercial Credit");
-        creditChargeInfo.setCcExpiryMonth(3);
-        creditChargeInfo.setCcExpiryYear(2030);
-
+        creditChargeInfo.setCcExpiryMonth(12);
+        creditChargeInfo.setCcExpiryYear(2020);
+        creditChargeInfo.setAmount(BigDecimal.valueOf(3000));
         creditCardPayment.setCreditChargeInfo(creditChargeInfo);
 
-        String sql1 =  "select * from paymentmethod where id = '" + "117" + "'";
-        QueryResult queryResult =  dataService.executeQuery(sql1);
-        PaymentMethod paymentMethod = (PaymentMethod) queryResult.getEntities().get(0);
+
+        PaymentMethod paymentMethod = new PaymentMethod();
+        paymentMethod.setName("Credit card");
+        paymentMethod.setType(PaymentTypeEnum.CREDIT_CARD.name());
+        PaymentMethod paymentMethod1 = dataService.add(paymentMethod);
+
 
         ReferenceType paymentMethodRef = new ReferenceType();
-        paymentMethodRef.setValue(paymentMethod.getId());
+        paymentMethodRef.setValue(paymentMethod1.getId());
 
         payment.setPaymentMethodRef(paymentMethodRef);
 

@@ -1,14 +1,10 @@
 package com.lexor.service.purchaseorder;
 
-import com.intuit.ipp.core.Context;
-import com.intuit.ipp.core.ServiceType;
+
 import com.intuit.ipp.data.*;
 import com.intuit.ipp.exception.FMSException;
-import com.intuit.ipp.security.OAuth2Authorizer;
 import com.intuit.ipp.services.DataService;
-import com.intuit.ipp.util.Config;
 import com.intuit.ipp.util.DateUtils;
-import com.lexor.config.ConfigProperties;
 import com.lexor.config.QBODataService;
 import com.lexor.model.Product;
 import com.lexor.model.PurchaseOrderDetails;
@@ -19,7 +15,6 @@ import com.lexor.service.address.AddressOBOService;
 import com.lexor.service.email.EmailQBOService;
 import com.lexor.service.item.ItemQBOService;
 import com.lexor.service.vendor.VendorQBOService;
-import org.apache.commons.lang.RandomStringUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -49,7 +44,7 @@ public class PurchaseOrderQBOServiceImp implements IQBOService
             LOG.info("send PO asyn to QBO");
             Future<Boolean> isSynSuccess = executorService.submit(new Callable<Boolean>(){
                 @Override
-                public Boolean call() throws Exception {
+                public Boolean call() {
                     LOG.info("Runnable");
                     try {
                         createEntityQBO(entity);
@@ -91,7 +86,7 @@ public class PurchaseOrderQBOServiceImp implements IQBOService
         purchaseOrder.setMemo("For Internal usage");
 
         Line line1 = new Line();
-        line1.setAmount(new BigDecimal("3.00"));
+        line1.setAmount(BigDecimal.valueOf(0));
         line1.setDetailType(LineDetailTypeEnum.ACCOUNT_BASED_EXPENSE_LINE_DETAIL);
 
         AccountBasedExpenseLineDetail detail = new AccountBasedExpenseLineDetail();
@@ -104,6 +99,7 @@ public class PurchaseOrderQBOServiceImp implements IQBOService
 
         lineList.add(line1);
 
+        double amount = 0;
         for (PurchaseOrderDetails purchaseOrderDetails: purchaseOrderDto.getPurchaseOrderDetails()) {
             Line line = new Line();
             line.setDetailType(LineDetailTypeEnum.ITEM_BASED_EXPENSE_LINE_DETAIL);
@@ -131,10 +127,10 @@ public class PurchaseOrderQBOServiceImp implements IQBOService
             line.setItemBasedExpenseLineDetail(itemBasedExpenseLineDetail);
 
             line.setAmount(BigDecimal.valueOf(purchaseOrderDetails.getQuantity() * purchaseOrderDetails.getPrice()));
-
+            amount += amount + ( Double.parseDouble(String.valueOf(line.getAmount())));
             lineList.add(line);
         }
-
+        purchaseOrder.setTotalAmt(BigDecimal.valueOf(amount));
         PhysicalAddress address = new PhysicalAddress();
         address.setLine1(purchaseOrderDto.getShipTo());
         ReferenceType  referenceType = new ReferenceType();

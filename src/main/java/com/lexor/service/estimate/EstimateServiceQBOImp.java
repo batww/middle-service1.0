@@ -4,23 +4,35 @@ import com.intuit.ipp.data.*;
 import com.intuit.ipp.exception.FMSException;
 import com.intuit.ipp.services.DataService;
 import com.intuit.ipp.util.DateUtils;
+import com.lexor.config.QBODataService;
 import com.lexor.model.KafkaOrderDetailDataPost;
 import com.lexor.model.OrderQuickBook;
+import com.lexor.model.Product;
+import com.lexor.service.IQBOService;
 import com.lexor.service.customer.CustomerQBOService;
+import com.lexor.service.item.ItemQBOService;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
 
-public class EstimateServiceQBOImp implements IEstimateServiceQBO{
+public class EstimateServiceQBOImp implements IEstimateServiceQBO, IQBOService {
+
+    private final ScheduledExecutorService executorService;
+    private final static int COUNT_THREAD_POOL = 20;
+
+    public EstimateServiceQBOImp() {
+        this.executorService = Executors.newScheduledThreadPool(COUNT_THREAD_POOL);
+    }
 
     @Override
-    public Estimate createEstimate(OrderQuickBook orderQuickBook, DataService dataService) throws FMSException, IOException {
-
-        Estimate estimate =new Estimate();
+    public Estimate createEstimate(Object entity, DataService dataService) throws FMSException, IOException {
+        OrderQuickBook orderQuickBook = (OrderQuickBook) entity;
+        Estimate estimate = new Estimate();
         try {
             //  create date estimate
             estimate.setTxnDate(DateUtils.getCurrentDateTime());
@@ -34,7 +46,7 @@ public class EstimateServiceQBOImp implements IEstimateServiceQBO{
 
         CustomerQBOService customerQBOService = new CustomerQBOService();
         final String idCustomer = String.valueOf(orderQuickBook.getOrderInfo().getIdCustomer());
-        Customer existCustomer = (Customer) customerQBOService.isEntityActive(idCustomer,dataService);
+        Customer existCustomer = (Customer) customerQBOService.isEntityActive(idCustomer,QBODataService.initConfigQuickBook());
 
         final String firstName = orderQuickBook.getOrderInfo().getFirstName();
         final String lastName =  orderQuickBook.getOrderInfo().getLastName();
@@ -88,32 +100,80 @@ public class EstimateServiceQBOImp implements IEstimateServiceQBO{
         List<Line> lineList = new ArrayList<>();
         for (KafkaOrderDetailDataPost detail: listOrderDetail) {
 
-            Line line = new Line();
-            final BigDecimal amount = BigDecimal.valueOf(detail.getQuantity() * detail.getPrice());
-            line.setDetailType(LineDetailTypeEnum.SALES_ITEM_LINE_DETAIL);
-            line.setAmount(amount);
-            line.setDescription("Sales order ");
-
             SalesItemLineDetail salesItemLineDetail = new SalesItemLineDetail();
+            Line line = new Line();
+            line.setDetailType(LineDetailTypeEnum.SALES_ITEM_LINE_DETAIL);
 
-            final BigDecimal quantity = BigDecimal.valueOf(detail.getQuantity());
-            final BigDecimal price = BigDecimal.valueOf(detail.getPrice());
+            ItemQBOService service = new ItemQBOService();
 
-            salesItemLineDetail.setQty(quantity);
-            salesItemLineDetail.setUnitPrice(price);
+            Product product = new Product();
+            product.setId(detail.getIdProduct());
+            product.setPrice(detail.getPrice());
 
-            ReferenceType taxCodeRef = new ReferenceType();
-            taxCodeRef.setValue("NON");
+            Item item = (Item) service.isEntityActive(detail.getIdProduct() +product.getENName(), QBODataService.initConfigQuickBook());
 
-            salesItemLineDetail.setTaxCodeRef(taxCodeRef);
-
+            if(item != null)
+                salesItemLineDetail.setItemRef(service.getRef(item));
+            else{
+                Item item1 = service.createItem(product,detail.getQuantity());
+                if(item1 != null)
+                    salesItemLineDetail.setItemRef(service.getRef(item1));
+            }
+            salesItemLineDetail.setQty(BigDecimal.valueOf(detail.getQuantity()));
+            salesItemLineDetail.setUnitPrice(BigDecimal.valueOf(detail.getPrice()));
             line.setSalesItemLineDetail(salesItemLineDetail);
+
+            line.setAmount(BigDecimal.valueOf(detail.getQuantity() * detail.getPrice()));
+
+            lineList.add(line);
 
             lineList.add(line);
         }
         estimate.setLine(lineList);
         estimate.setDocNumber(idOrder);
 
-        return dataService.add(estimate);
+        return QBODataService.initConfigQuickBook().add(estimate);
+    }
+
+    @Override
+    public Object createEntityQBO(Object entity) throws FMSException, ParseException, IOException {
+        return null;
+    }
+
+    @Override
+    public ReferenceType getRef(IntuitEntity entity) {
+        return null;
+    }
+
+    @Override
+    public IntuitEntity isEntityActive(String id, DataService dataService) throws FMSException {
+        return null;
+    }
+
+    @Override
+    public Object updateEntityQBO(Object entity) throws FMSException, IOException {
+        return null;
+    }
+
+    @Override
+    public Object deleteEntityOBO(String id, DataService dataService) throws FMSException {
+        return null;
+    }
+
+    @Override
+    public boolean sendAsynQBO(Object entity) throws ExecutionException, InterruptedException {
+        Future<Boolean> isSendSuccess = executorService.submit(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                try {
+                    createEstimate(entity,QBODataService.initConfigQuickBook());
+                    return true;
+                }catch (FMSException exception){
+                    exception.printStackTrace();
+                    return false;
+                }
+            }
+        });
+        return isSendSuccess.get();
     }
 }

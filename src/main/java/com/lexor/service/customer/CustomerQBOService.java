@@ -35,9 +35,10 @@ public class CustomerQBOService implements  IQBOService {
     }
 
     @Override
-    public IntuitEntity isEntityActive(String id, DataService dataService) throws FMSException {
+    public IntuitEntity isEntityActive(String id, DataService dataService) throws FMSException, IOException {
         String sql = "select * from customer";
-        QueryResult queryResult = dataService.executeQuery(sql);
+        DataService service = QBODataService.initConfigQuickBook();
+        QueryResult queryResult = service.executeQuery(sql);
         List<Customer> customers =(List<Customer>) queryResult.getEntities();
 
         if(!customers.isEmpty()){

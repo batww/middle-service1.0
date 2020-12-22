@@ -14,7 +14,7 @@ public interface IQBOService {
 
     ReferenceType getRef(IntuitEntity entity);
 
-    IntuitEntity isEntityActive(String id, DataService dataService) throws FMSException;
+    IntuitEntity isEntityActive(String id, DataService dataService) throws FMSException, IOException;
 
     Object updateEntityQBO(Object entity) throws FMSException, IOException;
 

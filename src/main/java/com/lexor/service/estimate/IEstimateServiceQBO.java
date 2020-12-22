@@ -8,5 +8,5 @@ import com.lexor.model.OrderQuickBook;
 import java.io.IOException;
 
 public interface IEstimateServiceQBO {
-    Estimate createEstimate(OrderQuickBook orderQuickBook, DataService dataService) throws FMSException, IOException;
+    Estimate createEstimate(Object entity, DataService dataService) throws FMSException, IOException;
 }
