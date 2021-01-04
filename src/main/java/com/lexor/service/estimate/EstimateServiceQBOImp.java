@@ -31,7 +31,9 @@ public class EstimateServiceQBOImp implements IEstimateServiceQBO, IQBOService {
 
     @Override
     public Estimate createEstimate(Object entity, DataService dataService) throws FMSException, IOException {
+
         OrderQuickBook orderQuickBook = (OrderQuickBook) entity;
+        System.out.println(orderQuickBook.getOrderInfo().getFirstName());
         Estimate estimate = new Estimate();
         try {
             //  create date estimate
@@ -50,7 +52,7 @@ public class EstimateServiceQBOImp implements IEstimateServiceQBO, IQBOService {
 
         final String firstName = orderQuickBook.getOrderInfo().getFirstName();
         final String lastName =  orderQuickBook.getOrderInfo().getLastName();
-        final StringBuilder displayName = new StringBuilder(firstName + " " + lastName);
+        final StringBuilder displayName = new StringBuilder((!firstName.equals("") ? firstName : "Bat") + " " + (!lastName.equals("") ?lastName :"Man"));
         final String companyName =  orderQuickBook.getOrderInfo().getCompany();
         final String emailCustomer = orderQuickBook.getOrderInfo().getEmail();
         final String phone = orderQuickBook.getOrderInfo().getPhone();
@@ -70,10 +72,11 @@ public class EstimateServiceQBOImp implements IEstimateServiceQBO, IQBOService {
             Customer customer = new Customer();
 
             customer.setDisplayName(displayName.toString());
+            System.out.println(customer.getDisplayName());
             customer.setCompanyName(companyName);
             customer.setNotes(idCustomer);
             customer.setPrimaryEmailAddr(emailAddress);
-
+            customer.setUserId(idCustomer);
             //create telephone number
             TelephoneNumber telephoneNumber =  new TelephoneNumber();
 
@@ -127,9 +130,9 @@ public class EstimateServiceQBOImp implements IEstimateServiceQBO, IQBOService {
 
             lineList.add(line);
 
-            lineList.add(line);
         }
         estimate.setLine(lineList);
+
         estimate.setDocNumber(idOrder);
 
         return QBODataService.initConfigQuickBook().add(estimate);
@@ -147,7 +150,13 @@ public class EstimateServiceQBOImp implements IEstimateServiceQBO, IQBOService {
 
     @Override
     public IntuitEntity isEntityActive(String id, DataService dataService) throws FMSException {
-        return null;
+        String sql = "select * from estimate where docnumber = '"+id+"'";
+        try {
+            Estimate estimate = (Estimate) dataService.executeQuery(sql).getEntities().get(0);
+            return estimate;
+        }catch (Exception exception){
+            return null;
+        }
     }
 
     @Override
@@ -174,6 +183,6 @@ public class EstimateServiceQBOImp implements IEstimateServiceQBO, IQBOService {
                 }
             }
         });
-        return isSendSuccess.get();
+        return true;
     }
 }

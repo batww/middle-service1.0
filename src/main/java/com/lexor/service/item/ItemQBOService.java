@@ -92,7 +92,7 @@ public class ItemQBOService implements IItemQBOService, IQBOService {
         item.setInvStartDate(new Date());
 
         // Start with 10 items
-        item.setQtyOnHand(BigDecimal.valueOf(1));
+        item.setQtyOnHand(BigDecimal.valueOf(quantity));
         item.setTrackQtyOnHand(true);
         item.setUnitPrice(BigDecimal.valueOf(product.getPrice()));
         Account incomeBankAccount = AccountQBOService.getIncomeBankAccount(QBODataService.initConfigQuickBook());

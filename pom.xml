@@ -109,6 +109,15 @@
             <artifactId>ipp-v3-java-data</artifactId>
             <version>6.0.8</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.intuit.quickbooks-online/oauth2-platform-api -->
+        <dependency>
+            <groupId>com.intuit.quickbooks-online</groupId>
+            <artifactId>oauth2-platform-api</artifactId>
+            <version>6.0.8</version>
+        </dependency>
+
+
         <!-- for logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -127,6 +136,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
             <version>1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lexor.middle-model</groupId>
+            <artifactId>model-middle</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 

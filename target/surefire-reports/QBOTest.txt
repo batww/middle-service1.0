@@ -1,17 +1,17 @@
 -------------------------------------------------------------------------------
 Test set: QBOTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 2.736 sec <<< FAILURE!
-getItem(QBOTest)  Time elapsed: 1.807 sec  <<< ERROR!
-com.intuit.ipp.exception.AuthenticationException: ERROR CODE:3200, ERROR MESSAGE:message=AuthenticationFailed; errorCode=003200; statusCode=401, ERROR DETAIL:Token expired: AB01608524827ciJQoIrpbZa0ZMO4FUMsJZE4QF8mR6U4Cyqrc
+Tests run: 3, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 3.029 sec <<< FAILURE!
+genericUrl(QBOTest)  Time elapsed: 2.058 sec  <<< ERROR!
+com.intuit.ipp.exception.AuthenticationException: ERROR CODE:3200, ERROR MESSAGE:message=AuthenticationFailed; errorCode=003200; statusCode=401, ERROR DETAIL:Token expired: AB01609413551ozJBLwsj6jYkBaOH0MUekE3QmfB3VhCHO21qh
 
 	at com.intuit.ipp.interceptors.HandleResponseInterceptor.execute(HandleResponseInterceptor.java:114)
 	at com.intuit.ipp.interceptors.IntuitInterceptorProvider.executeResponseInterceptors(IntuitInterceptorProvider.java:114)
 	at com.intuit.ipp.interceptors.IntuitInterceptorProvider.executeInterceptors(IntuitInterceptorProvider.java:87)
 	at com.intuit.ipp.services.DataService.executeInterceptors(DataService.java:159)
 	at com.intuit.ipp.services.DataService.executeQuery(DataService.java:636)
-	at com.lexor.service.item.ItemQBOService.isEntityActive(ItemQBOService.java:126)
-	at QBOTest.getItem(QBOTest.java:116)
+	at com.lexor.service.invoice.InvoiceQBOServiceImp.isEntityActive(InvoiceQBOServiceImp.java:269)
+	at QBOTest.genericUrl(QBOTest.java:149)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -43,16 +43,16 @@ com.intuit.ipp.exception.AuthenticationException: ERROR CODE:3200, ERROR MESSAGE
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 
-getVendorIs(QBOTest)  Time elapsed: 0.858 sec  <<< ERROR!
-com.intuit.ipp.exception.AuthenticationException: ERROR CODE:3200, ERROR MESSAGE:message=AuthenticationFailed; errorCode=003200; statusCode=401, ERROR DETAIL:Token expired: AB01608524827ciJQoIrpbZa0ZMO4FUMsJZE4QF8mR6U4Cyqrc
+findCustomer(QBOTest)  Time elapsed: 0.889 sec  <<< ERROR!
+com.intuit.ipp.exception.AuthenticationException: ERROR CODE:3200, ERROR MESSAGE:message=AuthenticationFailed; errorCode=003200; statusCode=401, ERROR DETAIL:Token expired: AB01609413551ozJBLwsj6jYkBaOH0MUekE3QmfB3VhCHO21qh
 
 	at com.intuit.ipp.interceptors.HandleResponseInterceptor.execute(HandleResponseInterceptor.java:114)
 	at com.intuit.ipp.interceptors.IntuitInterceptorProvider.executeResponseInterceptors(IntuitInterceptorProvider.java:114)
 	at com.intuit.ipp.interceptors.IntuitInterceptorProvider.executeInterceptors(IntuitInterceptorProvider.java:87)
 	at com.intuit.ipp.services.DataService.executeInterceptors(DataService.java:159)
 	at com.intuit.ipp.services.DataService.executeQuery(DataService.java:636)
-	at com.lexor.service.vendor.VendorQBOService.isEntityActive(VendorQBOService.java:84)
-	at QBOTest.getVendorIs(QBOTest.java:42)
+	at com.lexor.service.customer.CustomerQBOService.findCustomerByNote(CustomerQBOService.java:62)
+	at QBOTest.findCustomer(QBOTest.java:136)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)

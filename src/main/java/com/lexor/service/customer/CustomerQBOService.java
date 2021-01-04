@@ -6,6 +6,7 @@ import com.intuit.ipp.data.ReferenceType;
 import com.intuit.ipp.exception.FMSException;
 import com.intuit.ipp.services.DataService;
 import com.intuit.ipp.services.QueryResult;
+import com.intuit.ipp.util.Logger;
 import com.lexor.config.QBODataService;
 import com.lexor.service.IQBOService;
 
@@ -17,6 +18,9 @@ import java.util.List;
  */
 
 public class CustomerQBOService implements  IQBOService {
+
+
+    private static final org.slf4j.Logger LOG = Logger.getLogger();
 
 
     @Override
@@ -51,6 +55,22 @@ public class CustomerQBOService implements  IQBOService {
         }
         return null;
     }
+
+    public IntuitEntity findCustomerByNote(String id,DataService  dataService) throws FMSException, IOException {
+        LOG.debug("findCustomerByNote = " +id);
+        String sql = "select * from customer where id = '" +id+ "'";
+        QueryResult queryResult = dataService.executeQuery(sql);
+        try {
+            Customer customers = (Customer)queryResult.getEntities().get(0);
+            if(customers != null) return customers;
+        }catch (Exception exception){
+            return null;
+        }
+        return null;
+    }
+
+
+
 
     @Override
     public Object updateEntityQBO(Object entity) throws FMSException {

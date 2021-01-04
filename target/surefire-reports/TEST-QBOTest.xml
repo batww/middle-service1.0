@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="4" failures="0" name="QBOTest" time="2.709" errors="2" skipped="0">
+<testsuite tests="3" failures="0" name="QBOTest" time="2.999" errors="2" skipped="0">
   <properties>
     <property name="idea.version" value="2020.3"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
@@ -63,17 +63,17 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="QBOTest" name="getItem" time="1.807">
-    <error message="ERROR CODE:3200, ERROR MESSAGE:message=AuthenticationFailed; errorCode=003200; statusCode=401, ERROR DETAIL:Token expired: AB01608524827ciJQoIrpbZa0ZMO4FUMsJZE4QF8mR6U4Cyqrc
-" type="com.intuit.ipp.exception.AuthenticationException">com.intuit.ipp.exception.AuthenticationException: ERROR CODE:3200, ERROR MESSAGE:message=AuthenticationFailed; errorCode=003200; statusCode=401, ERROR DETAIL:Token expired: AB01608524827ciJQoIrpbZa0ZMO4FUMsJZE4QF8mR6U4Cyqrc
+  <testcase classname="QBOTest" name="genericUrl" time="2.058">
+    <error message="ERROR CODE:3200, ERROR MESSAGE:message=AuthenticationFailed; errorCode=003200; statusCode=401, ERROR DETAIL:Token expired: AB01609413551ozJBLwsj6jYkBaOH0MUekE3QmfB3VhCHO21qh
+" type="com.intuit.ipp.exception.AuthenticationException">com.intuit.ipp.exception.AuthenticationException: ERROR CODE:3200, ERROR MESSAGE:message=AuthenticationFailed; errorCode=003200; statusCode=401, ERROR DETAIL:Token expired: AB01609413551ozJBLwsj6jYkBaOH0MUekE3QmfB3VhCHO21qh
 
 	at com.intuit.ipp.interceptors.HandleResponseInterceptor.execute(HandleResponseInterceptor.java:114)
 	at com.intuit.ipp.interceptors.IntuitInterceptorProvider.executeResponseInterceptors(IntuitInterceptorProvider.java:114)
 	at com.intuit.ipp.interceptors.IntuitInterceptorProvider.executeInterceptors(IntuitInterceptorProvider.java:87)
 	at com.intuit.ipp.services.DataService.executeInterceptors(DataService.java:159)
 	at com.intuit.ipp.services.DataService.executeQuery(DataService.java:636)
-	at com.lexor.service.item.ItemQBOService.isEntityActive(ItemQBOService.java:126)
-	at QBOTest.getItem(QBOTest.java:116)
+	at com.lexor.service.invoice.InvoiceQBOServiceImp.isEntityActive(InvoiceQBOServiceImp.java:269)
+	at QBOTest.genericUrl(QBOTest.java:149)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -110,17 +110,17 @@ log4j:WARN Please initialize the log4j system properly.
 log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
 </system-err>
   </testcase>
-  <testcase classname="QBOTest" name="getVendorIs" time="0.858">
-    <error message="ERROR CODE:3200, ERROR MESSAGE:message=AuthenticationFailed; errorCode=003200; statusCode=401, ERROR DETAIL:Token expired: AB01608524827ciJQoIrpbZa0ZMO4FUMsJZE4QF8mR6U4Cyqrc
-" type="com.intuit.ipp.exception.AuthenticationException">com.intuit.ipp.exception.AuthenticationException: ERROR CODE:3200, ERROR MESSAGE:message=AuthenticationFailed; errorCode=003200; statusCode=401, ERROR DETAIL:Token expired: AB01608524827ciJQoIrpbZa0ZMO4FUMsJZE4QF8mR6U4Cyqrc
+  <testcase classname="QBOTest" name="findCustomer" time="0.889">
+    <error message="ERROR CODE:3200, ERROR MESSAGE:message=AuthenticationFailed; errorCode=003200; statusCode=401, ERROR DETAIL:Token expired: AB01609413551ozJBLwsj6jYkBaOH0MUekE3QmfB3VhCHO21qh
+" type="com.intuit.ipp.exception.AuthenticationException">com.intuit.ipp.exception.AuthenticationException: ERROR CODE:3200, ERROR MESSAGE:message=AuthenticationFailed; errorCode=003200; statusCode=401, ERROR DETAIL:Token expired: AB01609413551ozJBLwsj6jYkBaOH0MUekE3QmfB3VhCHO21qh
 
 	at com.intuit.ipp.interceptors.HandleResponseInterceptor.execute(HandleResponseInterceptor.java:114)
 	at com.intuit.ipp.interceptors.IntuitInterceptorProvider.executeResponseInterceptors(IntuitInterceptorProvider.java:114)
 	at com.intuit.ipp.interceptors.IntuitInterceptorProvider.executeInterceptors(IntuitInterceptorProvider.java:87)
 	at com.intuit.ipp.services.DataService.executeInterceptors(DataService.java:159)
 	at com.intuit.ipp.services.DataService.executeQuery(DataService.java:636)
-	at com.lexor.service.vendor.VendorQBOService.isEntityActive(VendorQBOService.java:84)
-	at QBOTest.getVendorIs(QBOTest.java:42)
+	at com.lexor.service.customer.CustomerQBOService.findCustomerByNote(CustomerQBOService.java:62)
+	at QBOTest.findCustomer(QBOTest.java:136)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -153,6 +153,5 @@ log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more in
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 </error>
   </testcase>
-  <testcase classname="QBOTest" name="getVendor" time="0"/>
-  <testcase classname="QBOTest" name="createPO" time="0.044"/>
+  <testcase classname="QBOTest" name="createES" time="0.052"/>
 </testsuite>

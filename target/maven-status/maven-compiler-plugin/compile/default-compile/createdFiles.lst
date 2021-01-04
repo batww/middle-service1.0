@@ -7,6 +7,7 @@ com/lexor/service/item/ItemQBOService$1.class
 com/lexor/config/ConfigProperties.class
 com/lexor/service/account/AccountQBOService.class
 com/lexor/service/until/ProxyProduct.class
+com/lexor/service/until/ProxyCreditCard.class
 com/lexor/service/until/ProxyOrder.class
 com/lexor/service/item/ItemQBOService.class
 com/lexor/service/until/ProxyPurchaseOrder.class
@@ -15,6 +16,7 @@ com/lexor/service/item/ItemQBOService$2.class
 com/lexor/service/KafkaServiceImp.class
 com/lexor/service/item/IItemQBOService.class
 com/lexor/service/queue/QueueService.class
+com/lexor/config/CORSFilter.class
 com/lexor/service/invoice/InvoiceQBOServiceImp.class
 com/lexor/service/invoice/IInvoiceQBOService.class
 com/lexor/controller/ProductController.class

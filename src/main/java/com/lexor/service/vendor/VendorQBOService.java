@@ -1,19 +1,15 @@
 package com.lexor.service.vendor;
 
-import com.intuit.ipp.core.Context;
-import com.intuit.ipp.core.ServiceType;
-import com.intuit.ipp.data.Customer;
+
 import com.intuit.ipp.data.IntuitEntity;
 import com.intuit.ipp.data.ReferenceType;
 import com.intuit.ipp.data.Vendor;
 import com.intuit.ipp.exception.FMSException;
-import com.intuit.ipp.security.OAuth2Authorizer;
 import com.intuit.ipp.services.DataService;
 import com.intuit.ipp.services.QueryResult;
 import com.lexor.config.QBODataService;
 import com.lexor.service.IQBOService;
 import com.lexor.service.queue.QueueProcessor;
-import sun.rmi.runtime.Log;
 
 import java.io.IOException;
 import java.text.ParseException;
